@@ -13,7 +13,7 @@ app.use(cors({origin: ['*' ]}));
 
 async function init() {
     const connection = await mongoose.connect(process.env.MONGO_URI, {
-      dbName: 'usersDB',
+      dbName: 'HAKATHON-SAFE_PASSAGE',
     });
     if (connection) {
       console.log('Connected to DB');
