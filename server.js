@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const mongoose = require('mongoose');
+const crimeStatRoutes = require('./routes/crimeStatRoutes');
 
 
 const cors = require('cors');
@@ -11,9 +12,11 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors({origin: ['*' ]}));
 
+app.use('/api/crimestats', crimeStatRoutes);
+
 async function init() {
     const connection = await mongoose.connect(process.env.MONGO_URI, {
-      dbName: 'HAKATHON-SAFE-PASSAGE',
+      dbName: 'policeData',
     });
     if (connection) {
       console.log('Connected to DB');
