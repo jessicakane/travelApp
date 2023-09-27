@@ -6,7 +6,7 @@ const secondsPerDay = 60 * 60 * 24;
 
 
 export default function Distance({leg}) {
-    console.log(leg)
+    console.log(leg.steps)
     
     if (!leg.distance || !leg.duration) return null
 
@@ -18,6 +18,7 @@ export default function Distance({leg}) {
     <br/>
     <div>Expected Travel Duration: {leg.duration.text}</div>
     <br/>
+    {/* <div>{leg.steps.map((step) => <div>{step={step}}</div>)}</div> */}
     </>
     )
 }

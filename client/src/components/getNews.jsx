@@ -1,61 +1,92 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import './GetNews.css'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import './GetNews.css'
 
-// const GetNews = () => {
-//   const [newsData, setNewsData] = useState([]);
+const GetNews = () => {
+  const [newsData, setNewsData] = useState([]);
 
-//   useEffect(() => {
-//     const getHeadlinesByQuery = async (query) => {
-//       try {
-//         const res = await axios.get("https://newsapi.org/v2/top-headlines/", {
-//           params: {
-//             country: "il",
-//             q: query,
-//             from: new Date().toISOString().split('T')[0],
-//             apiKey: "ee48ee45aad34ceda527c50bfb6d29f2",
-//           },
-//         });
+    useEffect(() => {
+        const translateText = async (text) => {
+          const api_key = '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';
+          const requestData = {
+            prompt: `Translate the following Hebrew text to English: '${text}'`,
+            max_tokens: 50,
+            temperature: 0.7,
+          };
+    
+          try {
+            const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-002/completions', requestData, {
+              headers: {
+                'Authorization': `Bearer ${api_key}`,
+                'Content-Type': 'application/json',
+              },
+            });
+            
+            const translatedText = response.data.choices[0].text.trim();
+            return translatedText;
+          } catch (error) {
+            console.error(error);
+            return null;
+          }
+        };
 
-//         if (res.data) {
-//           console.log(res.data);
-//           setNewsData((prevData) => [...prevData, ...res.data.articles]);
-//         }
-//       } catch (err) {
-//         console.log(err);
-//       }
-//     };
+    const getHeadlinesByQuery = async (query) => {
+      try {
+        const res = await axios.get("https://newsapi.org/v2/top-headlines/", {
+          params: {
+            country: "il",
+            q: query,
+            from: new Date().toISOString().split('T')[0],
+            apiKey: "5639bfa549a54c039f46c37c56c4d603",
+            pageSize: "3",
+          },
+        });
 
-//     const getNewsByQueries = async () => {
-//       const queries = [""];
+        if (res.data) {
+          const translatedArticles = await Promise.all(res.data.articles.map(async (article) => {
+            const translatedTitle = await translateText(article.title);
+            return { ...article, title: translatedTitle };
+          }));
 
-//       for (const query of queries) {
-//         await getHeadlinesByQuery(query);
-//       }
-//     };
+          setNewsData((prevData) => [...prevData, ...translatedArticles]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-//     getNewsByQueries();
-//   }, []);
+    const getNewsByQueries = async () => {
+      const queries = [""];
 
-//   return (
-//     <>
-//       <br />
-//       <br />
-//       <div>Breaking News</div>
-//       <br />
-//       <div>
-//         {newsData.map((article) => (
-//           <div key={article.id}>
-//             <div className="headlineContainer">
-//               <div className="siteName">{article.author}</div>
-//               <br />
-//               <div className="headlines">{article.title}</div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </>
-//   );
-// };
+      for (const query of queries) {
+        await getHeadlinesByQuery(query);
+      }
+    };
 
-// export default GetNews;
+    getNewsByQueries();
+  }, []);
+
+  return (
+    <>
+      <br />
+      <br />
+      <div>Breaking News</div>
+      <br />
+      <div>
+    
+        {newsData.map((article) => (
+          <div key={article.id}>
+            <div className="headlineContainer">
+              {/* <div className="siteName">{article.author}</div> */}
+              {/* <br /> */}
+              <div className="headlines">{article.title}</div>
+              {console.log(article.title)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default GetNews;

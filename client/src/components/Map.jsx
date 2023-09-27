@@ -220,11 +220,12 @@ export const Map = () => {
             <div> There are {medicalFacilities.length} medical facilities within 25 km of your travel destination.</div>
             </>
           )}
-          {/* <GetNews /> */}
+      
 
           {!travelLoc && <p>City of Interest</p>}
           {directions && <Distance leg={directions.routes[0].legs[0]} />}
 
+          <GetNews />  
         </div>
       <div className = 'map'>
       
