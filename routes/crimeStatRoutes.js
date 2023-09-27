@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/:cityName', crimeStatControllers.getStatByCityNameController);
+const crimeStatControllers = require('../controllers/crimeStatControllers');
+
+router.get('/', crimeStatControllers.getStatByCityNameController);
 
 module.exports = router;
