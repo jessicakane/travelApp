@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 .App-logo {
@@ -45,8 +46,10 @@
 .controls {
   width: 20%;
   padding: 1rem;
-  background: #14161a;
+  background: #502b03;
   color: #fff;
+  font-family: 'Pacifico', cursive;
+  border-color: #502b03;
 }
 
 .map {
@@ -57,9 +60,77 @@
 .map-container {
   width: 100%;
   height: 100vh;
+  
 }
 
 .combobox-input {
   width: 100%;
   padding: 0.5rem;
+  border-radius: 5px;
+  border: 2px solid white;
 }
+
+.welcomeCard {
+  border-radius: 5px;
+  margin: 27% 34% 10% 10%;
+  width: 50%;
+  font-family: 'Pacifico', cursive;
+}
+
+@keyframes flyIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+.welcome {
+  font-size: 3.2rem;
+  animation: flyIn 1s ease forwards;
+
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  animation: flyIn 1s ease forwards;
+}
+
+.homeContainer {
+  display: flex;
+  justify-content: center;
+  background-image: url('./images/safePassage.jpg');
+  background-size: cover; /* Adjust to your preference */
+  background-repeat: no-repeat; /* Adjust to your preference */
+  background-position: center; 
+  margin: 0;
+  padding: 0;
+  background-attachment: fixed;
+  height: 100%;
+}
+
+.homeContainer button {
+  padding: 10px 25px 10px 25px;
+  font-size: 1.5rem;
+  margin-top: 5%;
+  border-radius: 7px;
+  border: 2px solid black;
+  font-family: 'Pacifico', cursive;
+  background-color: #edc57e;
+  width: 50%;
+  transition: transform 0.3s ease;
+}
+
+.icon {
+  margin-left: 5%
+}
+
+.homeContainer button:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  background-color: #dba355;
+}
+
