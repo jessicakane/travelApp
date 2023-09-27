@@ -31,6 +31,7 @@ const GetNews = () => {
 
     const getNewsByQueries = async () => {
       const queries = [""];
+      //query keywords in hebrew, but headlines should display in english
 
       for (const query of queries) {
         await getHeadlinesByQuery(query);

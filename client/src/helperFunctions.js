@@ -1,3 +1,5 @@
+
+
 export const getCityNameFromCoordinates = (latitude, longitude) => {
     return new Promise((resolve, reject) => {
       const apiKey = 'AIzaSyD4wav1ju33YJcb_sz0K1m1q-jsBUC2hYA';
@@ -25,3 +27,19 @@ export const getCityNameFromCoordinates = (latitude, longitude) => {
         });
     });
   }
+
+export const generateCircularPoints = (center, radius, numPoints) => {
+    const points = [];
+    const angleIncrement = (2 * Math.PI) / numPoints; 
+  
+    for (let i = 0; i < numPoints; i++) {
+      const angle = i * angleIncrement;
+      const x = center.lat + radius * Math.cos(angle);
+     
+      const y = center.lng + radius * Math.sin(angle);
+     
+      points.push([x,y]);
+    }
+  
+    return points;
+  };

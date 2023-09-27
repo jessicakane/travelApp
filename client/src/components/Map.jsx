@@ -12,6 +12,7 @@ import {
 import {Places} from './Places'
 import { getCityNameFromCoordinates } from '../helperFunctions';
 import GetNews from './GetNews';
+import { generateCircularPoints } from '../helperFunctions';
 
 export const Map = () => {
 
@@ -32,7 +33,6 @@ export const Map = () => {
   }), [])
 
   useEffect(() => {
-    // Check if geolocation is available in the user's browser
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         const userLocation = {
@@ -49,7 +49,6 @@ export const Map = () => {
   }, []);
 
   useEffect(() => {
-    // Perform Nearby Search for medical facilities when travelLoc is available
     if (travelLoc) {
       const targetLocation = new window.google.maps.LatLng(
         travelLoc.lat,
@@ -58,54 +57,97 @@ export const Map = () => {
 
       const request = {
         location: targetLocation,
-        radius: 25000, // 15 km radius
-        keyword: "medical facility", // Keyword to search for medical facilities
-        type: ["hospital", "clinic", "medical"], // Specify the types you want
+        radius: 25000, 
+        keyword: "medical facility", 
+        type: ["hospital", "clinic", "medical"], 
       };
 
       const service = new window.google.maps.places.PlacesService(mapRef.current);
 
       service.nearbySearch(request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          // Set the found medical facilities
           setMedicalFacilities(results);
         } else {
           console.error("Nearby Search request failed with status:", status);
         }
       });
-    }
-    if (travelLoc) {
-      // Create an array containing the user's searched location
-      const userSearchedLocation = [new window.google.maps.LatLng(
-        travelLoc.lat,
-        travelLoc.lng
-      )];
 
-      for (let i = 0.001; i <0.009; i = i + 0.001) {
-        userSearchedLocation.push(new window.google.maps.LatLng(travelLoc.lat + i, travelLoc.lng + i));
-        userSearchedLocation.push(new window.google.maps.LatLng(travelLoc.lat -i, travelLoc.lng - i));
+      let targetLocationArray = [];
+      
+      
+      for (let i = 0; i <0.009; i = i + 0.001) {
+        targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat + i, travelLoc.lng + i));
+        if (i>0) {
+        targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat -i, travelLoc.lng - i));
+        }
       }
-  
-  
-      // Set the updated heatmap data in state 
-      setTravelLocHeatmap(userSearchedLocation);
+      //create more circular function
+      setTravelLocHeatmap(targetLocationArray);
       getCityNameFromCoordinates(travelLoc.lat, travelLoc.lng).then(name => console.log(name)).catch(error => console.log(error))
     }
-    console.log(travelLoc)
-    
-  }, [travelLoc]);
 
-  const lighterPinkGradientArray = [
-    'rgba(255, 255, 255, 0)',
-    'rgba(255, 182, 193, 0.5)', // Light Pink
-    'rgba(255, 105, 180, 1)'        // Red
+    }, [travelLoc]);
+
+    const score10Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 128, 0, 0.5)',   // Dark green
+      'rgba(0, 255, 0, 1)'      // Light green
+    ];
+
+    const score9Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 255, 0, 0.5)',      // Light green
+      'rgba(144, 238, 144, 1)'    // Lighter green
+    ];
+
+    const score8Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 255, 0, 0.5)',  // Light green
+      'rgba(255, 255, 0, 1)'  // Yellow
+    ];
+
+    const score7Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(173, 255, 47, 0.5)',  // Lighter green
+      'rgba(255, 255, 0, 1)'    // Yellow
+    ];
+
+    const score6Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(255, 255, 0, 0.5)',  // Yellow
+      'rgba(255, 204, 0, 1)'    // Darker yellow
+    ];
+
+    const score5Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(255, 204, 0, 0.5)',  // Dark yellow
+      'rgba(255, 128, 0, 1)'    // Orange
+    ];
+  
+    const score4Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(255, 128, 0, 0.5)',  // Orange
+      'rgba(255, 0, 127, 1)'    // Pink
+    ];
+
+  const score3Gradient = [
+    'rgba(0,0,0,0)',
+    'rgba(255, 0, 127, 0.5)',  // Pink
+    'rgba(255, 64, 64, 1)'    // Light Red
+  ];
+  const score2Gradient = [
+    'rgba(0,0,0,0)',
+    'rgba(255, 64, 64, 0.5)',  // Light Red
+    'rgba(255, 0, 0, 1)'      // Slightly Darker Red
   ];
 
-  const greenGradientArray = [
-    'rgba(0, 0, 0, 0)',
-    'rgba(0, 128, 0, 0.5)', // Green
-    'rgba(0, 255, 0, 1)'    // Bright Green
+  const score1Gradient = [
+    'rgba(0,0,0,0)',
+    'rgba(255, 0, 0, 0.5)',  // Red
+    'rgba(139, 0, 0, 1)'    // Darker Red
   ];
+
+  
 
   return (
     <div className='container'>
@@ -138,12 +180,12 @@ export const Map = () => {
               lng: facility.geometry.location.lng(),
             }}
             icon={{
-              url: facility.icon, // Use the icon URL provided in the medicalFacilities array
+              url: facility.icon, 
               scaledSize: new window.google.maps.Size(20, 20),
             }} /> ))}
         
         </>)}
-        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: lighterPinkGradientArray}} />
+        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: score10Gradient}} />
         </GoogleMap>
       
       </div>
@@ -180,25 +222,3 @@ const farOptions = {
   strokeColor: "#FF5252",
   fillColor: "#FF5252",
 };
-
-//const generateHouses = (position: google.maps.LatLngLiteral) => {
-//  const _houses: Array<google.maps.LatLngLiteral> = [];
-//  for (let i = 0; i < 100; i++) {
-//    const direction = Math.random() < 0.5 ? -2 : 2;
-//    _houses.push({
-//      lat: position.lat + Math.random() / direction,
-//      lng: position.lng + Math.random() / direction,
-//    });
-//  }
-//  return _houses;
-//};
-
-const findMedicalFacilities = (location, radius) => {
-  const request = {
-    location: location,
-    radius: 15000, // 15 km radius (in meters)
-    keyword: 'medical facility', // Keyword to search for medical facilities
-    type: ['hospital', 'clinic'], // Specify the types you want (you can add more if needed)
-  };
-  
-}
