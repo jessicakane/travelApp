@@ -1,11 +1,12 @@
-import logo from './logo.svg';
-import Heatmap from './components/Heatmap';
+
 import './App.css';
+import { MapPage } from './components/pages/MapPage';
+
 
 function App() {
   return (
     <div className="App">
-      <Heatmap />
+      <MapPage />
     </div>
   );
 }
