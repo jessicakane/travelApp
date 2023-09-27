@@ -1,5 +1,5 @@
-
 import './App.css';
+import GetNews from './components/GetNews';
 import { MapPage } from './components/pages/MapPage';
 
 

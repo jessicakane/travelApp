@@ -11,6 +11,7 @@ import {
 } from "@react-google-maps/api";
 import {Places} from './Places'
 import { getCityNameFromCoordinates } from '../helperFunctions';
+import GetNews from './GetNews';
 
 export const Map = () => {
 
@@ -118,6 +119,7 @@ export const Map = () => {
             <div> There are {medicalFacilities.length} medical facilities within 25 km of your travel destination.</div>
             </>
           )}
+          <GetNews />
         </div>
       <div className = 'map'>
       
