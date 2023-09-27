@@ -8,7 +8,7 @@ const GetNews = () => {
   useEffect(() => {
     const getHeadlinesByQuery = async (query) => {
       try {
-        const res = await axios.get("https://newsapi.org/v2/everything/", {
+        const res = await axios.get("https://newsapi.org/v2/top-headlines/", {
           params: {
             country: "il",
             q: query,
