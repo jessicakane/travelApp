@@ -94,6 +94,7 @@ export const Map = () => {
       console.log(name);
       if (name) {
       const cityStats = await fetchCitysStats(name);
+      console.log(cityStats);
       if (cityStats) {
         const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
         if (score) {
@@ -101,6 +102,9 @@ export const Map = () => {
           dataPoint.push('score0Gradient');
         }
       }}
+      if (dataPoint.length === 2) {
+        dataPoint.push('score0Gradient')
+      }
       let targetLocationArray = [];
       for (let i = 0; i <0.009; i = i + 0.001) {
         targetLocationArray.push(new window.google.maps.LatLng(dataPoint[0] + i, dataPoint[1] + i));
