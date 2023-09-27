@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+require('dotenv').config();
 import './GetNews.css'
 
 const GetNews = () => {
   const [newsData, setNewsData] = useState([]);
 
     useEffect(() => {
-        const translateText = async (text) => {
-          const api_key = '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';
+        const translateText = async (text) => { 
+          const api_key = process.env.OPEN_AI_KEY;
           const requestData = {
             prompt: `Translate the following Hebrew text to English: '${text}'`,
             max_tokens: 50,
@@ -37,7 +38,7 @@ const GetNews = () => {
             country: "il",
             q: query,
             from: new Date().toISOString().split('T')[0],
-            apiKey: "5639bfa549a54c039f46c37c56c4d603",
+            apiKey: process.env.NEWS_API_KEY,
             pageSize: "3",
           },
         });
