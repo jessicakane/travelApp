@@ -41,7 +41,7 @@ const GetNews = () => {
             country: "il",
             q: query,
             from: new Date().toISOString().split('T')[0],
-            apiKey: process.env.NEWS_API_KEY,
+            apiKey: process.env.NEWS_API_KEY_NEW,
             pageSize: "3",
           },
         });

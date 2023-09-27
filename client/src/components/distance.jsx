@@ -18,7 +18,16 @@ export default function Distance({leg}) {
     <br/>
     <div>Expected Travel Duration: {leg.duration.text}</div>
     <br/>
-    {/* <div>{leg.steps.map((step) => <div>{step={step}}</div>)}</div> */}
+    <div>
+        {leg.steps.map((step, index) => (
+          <div key={index}>
+            <p>Instructions: <span dangerouslySetInnerHTML={{ __html: step.instructions }} /></p>
+            <p>Distance: {step.distance.text}</p>
+            <p>Duration: {step.duration.text}</p>
+          </div>
+        ))}
+      </div>
+
     </>
     )
 }
