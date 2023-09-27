@@ -43,3 +43,31 @@ export const generateCircularPoints = (center, radius, numPoints) => {
   
     return points;
   };
+
+export const generateDataPointsIsrael = () => {
+    // Define the bounding box for Israel
+const minLat = 29.45;
+const maxLat = 33.5;
+const minLon = 34.25;
+const maxLon = 35.9;
+
+// Number of data points you want
+const numPoints = 200;
+
+// Create a list to store LatLng points
+const dataPoints = [];
+
+// Generate data points
+for (let i = 0; i < numPoints; i++) {
+    // Generate random coordinates within the bounding box
+    const lat = minLat + Math.random() * (maxLat - minLat);
+    const lon = minLon + Math.random() * (maxLon - minLon);
+
+    // Create a LatLng object and add it to the list
+    const point = new window.google.maps.LatLng(lat, lon);
+    dataPoints.push(point);
+}
+
+// Now, dataPoints contains 200 random LatLng points within the bounding box of Israel
+console.log(dataPoints);
+}

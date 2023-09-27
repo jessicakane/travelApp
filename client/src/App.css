@@ -46,28 +46,31 @@
 .controls {
   width: 20%;
   padding: 1rem;
-  background: #502b03;
+  background: #141414;
   color: #fff;
   font-family: 'Pacifico', cursive;
-  border-color: #502b03;
+  border-color: #141414;
+  color: #c5c3a5;
+  
 }
 
 .map {
-  width: 80%;
+  width: 82%;
   height: 100vh;
 }
 
 .map-container {
   width: 100%;
   height: 100vh;
-  
+
 }
 
 .combobox-input {
   width: 100%;
   padding: 0.5rem;
   border-radius: 5px;
-  border: 2px solid white;
+  border: 2px solid #c5c3a5;
+  background-color: #c5c3a5;
 }
 
 .welcomeCard {

@@ -13,11 +13,12 @@ import {
 import "@reach/combobox/styles.css";
 
 
-export const Places = ({setTravelLoc}) => {
+export const Places = ({setTravelLoc, setGradient, score0Gradient}) => {
 
   const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
 
   const handleSelect = async(location) => {
+    setGradient(score0Gradient);
     setValue(location, false);
     clearSuggestions();
     const results = await getGeocode({address: location});

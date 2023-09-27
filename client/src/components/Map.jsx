@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef, useContext } from "react";
 import {
   GoogleMap,
   Marker,
@@ -10,10 +10,11 @@ import {
   useLoadScript, 
 } from "@react-google-maps/api";
 import {Places} from './Places'
-import { getCityNameFromCoordinates } from '../helperFunctions';
+import { getCityNameFromCoordinates, generateDataPointsIsrael } from '../helperFunctions';
 import GetNews from './GetNews';
 import { generateCircularPoints } from '../helperFunctions';
 import Distance from './distance';
+import { CrimeStatsContext } from './contexts/CrimeStatsContextProvider';
 
 
 export const Map = () => {
@@ -23,6 +24,11 @@ export const Map = () => {
   const [medicalFacilities, setMedicalFacilities] = useState([]);
   const [travelLocHeatmap, setTravelLocHeatmap] = useState([]);
   const [directions, setDirections] = useState();
+  const [cityName, setCityName] = useState(false);
+  const [safetyScore, setSafetyScore] = useState(0);
+  const [gradient, setGradient] = useState(false);
+
+  const {fetchCitysStats} = useContext(CrimeStatsContext)
 
   const mapRef = useRef();
 
@@ -64,6 +70,7 @@ export const Map = () => {
     } else {
       console.error('Geolocation is not available in this browser.');
     }
+    generateDataPointsIsrael();
     
   }, []);
 
@@ -103,16 +110,48 @@ export const Map = () => {
       }
       //create more circular function
       setTravelLocHeatmap(targetLocationArray);
-      getCityNameFromCoordinates(travelLoc.lat, travelLoc.lng).then(name => console.log(name)).catch(error => console.log(error))
+      getCityNameFromCoordinates(travelLoc.lat, travelLoc.lng).then(name => setCityName(name)).catch(error => console.log(error))
     }
 
     }, [travelLoc]);
+
+    useEffect(() => {
+      if (cityName) {
+      getCitysScore(cityName);}
+    }, [cityName])
+
+    useEffect(() => {
+      if (getCitysScore(cityName)) {
+      const gradientVariableName = `score${safetyScore}Gradient`;
+      const selectedGradient = eval(gradientVariableName);
+      setGradient(selectedGradient);}
+
+    }, [safetyScore])
+
+    const getCitysScore = async(cityName) => {
+      const cityStats = await fetchCitysStats(cityName);
+      if (cityStats) {
+        const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
+      setSafetyScore(score);
+        return true
+      }
+      
+      return false
+    }
 
     const score10Gradient = [
       'rgba(0,0,0,0)',
       'rgba(0, 128, 0, 0.5)',   // Dark green
       'rgba(0, 255, 0, 1)'      // Light green
     ];
+
+    const score0Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 0, 0, 0)',   // Dark green
+      'rgba(0, 0, 0, 0)'      // Light green
+    ];
+
+
 
     const score9Gradient = [
       'rgba(0,0,0,0)',
@@ -173,7 +212,7 @@ export const Map = () => {
     <div className='container'>
       <div className = 'controls'>
         <h1>SafePassage</h1>
-        <Places setTravelLoc = {(position) => {
+        <Places setGradient = {setGradient} score0Gradient = {score0Gradient} setTravelLoc = {(position) => {
           setTravelLoc(position);
           mapRef.current?.panTo(position)}} />
           {travelLoc && (
@@ -225,7 +264,7 @@ export const Map = () => {
             })} /> ))}
         
         </>)}
-        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: score10Gradient}} />
+        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: gradient}} />
         </GoogleMap>
       
       </div>
