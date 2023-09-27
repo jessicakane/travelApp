@@ -7,12 +7,14 @@ import {
   Circle,
   MarkerClusterer,
   HeatmapLayer,
-  useLoadScript
+  useLoadScript, 
 } from "@react-google-maps/api";
 import {Places} from './Places'
 import { getCityNameFromCoordinates } from '../helperFunctions';
 import GetNews from './GetNews';
 import { generateCircularPoints } from '../helperFunctions';
+import Distance from './distance';
+
 
 export const Map = () => {
 
@@ -20,6 +22,7 @@ export const Map = () => {
   const [travelLoc, setTravelLoc] = useState(null);
   const [medicalFacilities, setMedicalFacilities] = useState([]);
   const [travelLocHeatmap, setTravelLocHeatmap] = useState([]);
+  const [directions, setDirections] = useState();
 
   const mapRef = useRef();
 
@@ -31,6 +34,22 @@ export const Map = () => {
     clickableIcons: false,
     mapId: '9b2fc300a91ad9ae'
   }), [])
+
+  const fetchDirections = (position) => {
+    if (!travelLoc) return;
+
+    const service = new window.google.maps.DirectionsService();
+    service.route({
+      origin: travelLoc,
+      destination: position,
+      travelMode: window.google.maps.TravelMode.DRIVING
+    },
+    (result, status) => {
+      if (status === "OK" && result) {
+        setDirections(result)
+      }
+    })
+  }
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -67,6 +86,7 @@ export const Map = () => {
       service.nearbySearch(request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           setMedicalFacilities(results);
+          //Has the facility data in a array after the user searches an area
         } else {
           console.error("Nearby Search request failed with status:", status);
         }
@@ -162,13 +182,27 @@ export const Map = () => {
             </>
           )}
           {/* <GetNews /> */}
+
+          {!travelLoc && <p>City of Interest</p>}
+          {directions && <Distance leg={directions.routes[0].legs[0]} />}
+
         </div>
       <div className = 'map'>
       
         <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {10} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
+
+        {directions && <DirectionsRenderer directions={directions} options={{
+          polylineOptions: {
+          zIndex: 50,
+          strokeColor: "#1976D2", 
+          strokeWeight: 5,
+          },
+        }} />}
+
         {travelLoc && (
         <>
         <Marker position = {travelLoc} />
+
         <Circle center = {travelLoc} radius = {7000} options = {closeOptions}/>
         <Circle center = {travelLoc} radius = {15000} options = {middleOptions}/>
         <Circle center = {travelLoc} radius = {25000} options = {farOptions}/>
@@ -182,7 +216,13 @@ export const Map = () => {
             icon={{
               url: facility.icon, 
               scaledSize: new window.google.maps.Size(20, 20),
-            }} /> ))}
+            }} 
+            onClick={(() => {
+              fetchDirections({
+                lat: facility.geometry.location.lat(),
+                lng: facility.geometry.location.lng(),
+              })
+            })} /> ))}
         
         </>)}
         <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: score10Gradient}} />
