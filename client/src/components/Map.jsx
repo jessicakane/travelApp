@@ -161,7 +161,7 @@ export const Map = () => {
             <div> There are {medicalFacilities.length} medical facilities within 25 km of your travel destination.</div>
             </>
           )}
-          <GetNews />
+          {/* <GetNews /> */}
         </div>
       <div className = 'map'>
       
