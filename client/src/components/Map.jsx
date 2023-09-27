@@ -31,7 +31,6 @@ export const Map = () => {
   }), [])
 
   useEffect(() => {
-    // Check if geolocation is available in the user's browser
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         const userLocation = {
@@ -48,7 +47,6 @@ export const Map = () => {
   }, []);
 
   useEffect(() => {
-    // Perform Nearby Search for medical facilities when travelLoc is available
     if (travelLoc) {
       const targetLocation = new window.google.maps.LatLng(
         travelLoc.lat,
@@ -57,54 +55,51 @@ export const Map = () => {
 
       const request = {
         location: targetLocation,
-        radius: 25000, // 15 km radius
-        keyword: "medical facility", // Keyword to search for medical facilities
-        type: ["hospital", "clinic", "medical"], // Specify the types you want
+        radius: 25000, 
+        keyword: "medical facility", 
+        type: ["hospital", "clinic", "medical"], 
       };
 
       const service = new window.google.maps.places.PlacesService(mapRef.current);
 
       service.nearbySearch(request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          // Set the found medical facilities
           setMedicalFacilities(results);
         } else {
           console.error("Nearby Search request failed with status:", status);
         }
       });
-    }
-    if (travelLoc) {
-      // Create an array containing the user's searched location
-      const userSearchedLocation = [new window.google.maps.LatLng(
-        travelLoc.lat,
-        travelLoc.lng
-      )];
 
-      for (let i = 0.001; i <0.009; i = i + 0.001) {
-        userSearchedLocation.push(new window.google.maps.LatLng(travelLoc.lat + i, travelLoc.lng + i));
-        userSearchedLocation.push(new window.google.maps.LatLng(travelLoc.lat -i, travelLoc.lng - i));
+      let targetLocationArray = [];
+      for (let i = 0; i <0.009; i = i + 0.001) {
+        targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat + i, travelLoc.lng + i));
+        if (i>0) {
+        targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat -i, travelLoc.lng - i));
+        }
       }
-  
-  
-      // Set the updated heatmap data in state 
-      setTravelLocHeatmap(userSearchedLocation);
+      setTravelLocHeatmap(targetLocationArray);
       getCityNameFromCoordinates(travelLoc.lat, travelLoc.lng).then(name => console.log(name)).catch(error => console.log(error))
     }
-    console.log(travelLoc)
-    
-  }, [travelLoc]);
 
-  const lighterPinkGradientArray = [
+    }, [travelLoc]);
+
+  const mediumSafetyGradientArray = [
     'rgba(255, 255, 255, 0)',
-    'rgba(255, 182, 193, 0.5)', // Light Pink
-    'rgba(255, 105, 180, 1)'        // Red
+    'rgba(255, 182, 193, 0.5)', 
+    'rgba(255, 105, 180, 1)'        
   ];
 
-  const greenGradientArray = [
+  const HighSafetyGradientArray = [
     'rgba(0, 0, 0, 0)',
-    'rgba(0, 128, 0, 0.5)', // Green
-    'rgba(0, 255, 0, 1)'    // Bright Green
+    'rgba(0, 128, 0, 0.5)', 
+    'rgba(0, 255, 0, 1)'    
   ];
+
+  const LowSafetyGradientArray = [
+    'rgba(0, 0, 0, 0)',
+    'rgba(139, 0, 0, 0.5)', 
+    'rgba(255, 0, 0, 1)'
+  ]
 
   return (
     <div className='container'>
@@ -141,7 +136,7 @@ export const Map = () => {
             }} /> ))}
         
         </>)}
-        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: lighterPinkGradientArray}} />
+        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: HighSafetyGradientArray}} />
         </GoogleMap>
       
       </div>
@@ -178,25 +173,3 @@ const farOptions = {
   strokeColor: "#FF5252",
   fillColor: "#FF5252",
 };
-
-//const generateHouses = (position: google.maps.LatLngLiteral) => {
-//  const _houses: Array<google.maps.LatLngLiteral> = [];
-//  for (let i = 0; i < 100; i++) {
-//    const direction = Math.random() < 0.5 ? -2 : 2;
-//    _houses.push({
-//      lat: position.lat + Math.random() / direction,
-//      lng: position.lng + Math.random() / direction,
-//    });
-//  }
-//  return _houses;
-//};
-
-const findMedicalFacilities = (location, radius) => {
-  const request = {
-    location: location,
-    radius: 15000, // 15 km radius (in meters)
-    keyword: 'medical facility', // Keyword to search for medical facilities
-    type: ['hospital', 'clinic'], // Specify the types you want (you can add more if needed)
-  };
-  
-}
