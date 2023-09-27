@@ -86,7 +86,8 @@ export const Map = () => {
       [32.084041, 34.887762],
       [31.9730015, 34.7925013],
       [32.015833, 34.787384],
-      [31.892773, 34.811272]
+      [31.892773, 34.811272],
+      [31.890267, 35.010397]
     ];
     for (const dataPoint of dataPoints) { 
       const name = await getCityNameFromCoordinates(dataPoint[0], dataPoint[1]);
