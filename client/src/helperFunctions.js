@@ -64,10 +64,10 @@ for (let i = 0; i < numPoints; i++) {
     const lon = minLon + Math.random() * (maxLon - minLon);
 
     // Create a LatLng object and add it to the list
-    const point = new window.google.maps.LatLng(lat, lon);
-    dataPoints.push(point);
+    dataPoints.push([lat, lon]);
 }
 
 // Now, dataPoints contains 200 random LatLng points within the bounding box of Israel
 console.log(dataPoints);
+return dataPoints;
 }
