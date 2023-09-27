@@ -8,9 +8,9 @@ const GetNews = () => {
   useEffect(() => {
     const getHeadlinesByQuery = async (query) => {
       try {
-        const res = await axios.get("https://newsapi.org/v2/everything?", {
+        const res = await axios.get("https://newsapi.org/v2/everything/", {
           params: {
-            // country: "il",
+            country: "il",
             q: query,
             from: "2023-09-27",
             apiKey: "ee48ee45aad34ceda527c50bfb6d29f2",
@@ -27,7 +27,7 @@ const GetNews = () => {
     };
 
     const getNewsByQueries = async () => {
-      const queries = ["traffic"];
+      const queries = [""];
 
       for (const query of queries) {
         await getHeadlinesByQuery(query);
