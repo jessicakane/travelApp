@@ -27,6 +27,7 @@ export const Map = () => {
   const [cityName, setCityName] = useState(false);
   const [safetyScore, setSafetyScore] = useState(0);
   const [gradient, setGradient] = useState(false);
+  const [pointsForMap, setPointsForMap] = useState([]);
 
   const {fetchCitysStats} = useContext(CrimeStatsContext)
 
@@ -70,12 +71,56 @@ export const Map = () => {
     } else {
       console.error('Geolocation is not available in this browser.');
     }
-    generateDataPointsIsrael();
-    
+    updatePointsForMap();
   }, []);
+
+  const updatePointsForMap = async() => {
+    const dataPoints = [
+      [32.0803161, 34.7699044],
+      [31.75465609999999, 35.218185],
+      [32.013186, 34.748019],
+      [32.7940463, 34.989571],
+      [32.0852999, 34.78176759999999],
+      [31.768319, 35.21371],
+      [32.7907886, 34.9862417],
+      [32.084041, 34.887762],
+      [31.9730015, 34.7925013],
+      [32.015833, 34.787384],
+      [31.892773, 34.811272]
+    ];
+    for (const dataPoint of dataPoints) { 
+      const name = await getCityNameFromCoordinates(dataPoint[0], dataPoint[1]);
+      console.log(name);
+      if (name) {
+      const cityStats = await fetchCitysStats(name);
+      if (cityStats) {
+        const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
+        if (score) {
+        dataPoint.push(`score${score}Gradient`);} else {
+          dataPoint.push('score0Gradient');
+        }
+      }}
+      let targetLocationArray = [];
+      for (let i = 0; i <0.009; i = i + 0.001) {
+        targetLocationArray.push(new window.google.maps.LatLng(dataPoint[0] + i, dataPoint[1] + i));
+        if (i>0) {
+        targetLocationArray.push(new window.google.maps.LatLng(dataPoint[0] -i, dataPoint[1] - i));
+        }
+      }
+      dataPoint.push(targetLocationArray);
+    }
+    
+    setPointsForMap(dataPoints)
+    console.log(dataPoints)
+  }
+
+  useEffect(() => {
+    console.log(pointsForMap)
+  }, [pointsForMap])
 
   useEffect(() => {
     if (travelLoc) {
+      console.log([travelLoc.lat, travelLoc.lng])
       const targetLocation = new window.google.maps.LatLng(
         travelLoc.lat,
         travelLoc.lng
@@ -222,7 +267,8 @@ export const Map = () => {
           )}
       
 
-          {!travelLoc && <p>City of Interest</p>}
+          {pointsForMap.length === 0 && <div className = 'mapColorLoader'>Please wait while we color your map...</div>}
+          {pointsForMap.length > 0 && <><div className = 'gradientBackgroundDiv'></div><div className = 'keyContainer'><div className = 'danger'>Dangerous</div><div className = 'safe'>Safe</div></div></>}
           {directions && <Distance leg={directions.routes[0].legs[0]} />}
 
           <GetNews />  
@@ -265,6 +311,7 @@ export const Map = () => {
             })} /> ))}
         
         </>)}
+        {pointsForMap.length > 0 && pointsForMap.map(point => <HeatmapLayer data = {point[3]} options = {{radius: 20, gradient: eval(point[2])}} />)}
         <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: gradient}} />
         </GoogleMap>
       

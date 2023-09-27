@@ -137,3 +137,48 @@
   background-color: #dba355;
 }
 
+.mapColorLoader {
+  margin-top: 10%;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, red, green);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.colorKey {
+  margin-top: 10%;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, red, green);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradientBackgroundDiv {
+  margin-top: 10%;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, red, green);
+  padding: 10px; /* Add padding as needed */
+  display: inline-block; /* To make the div only as wide as its content */
+  color: white; /* Text color for the content inside the div */
+  width: 90%;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.keyContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.danger {
+  color: red;
+  font-size: 1.2rem;
+}
+
+.safe {
+  color: green;
+  font-size: 1.2rem;
+}
+
