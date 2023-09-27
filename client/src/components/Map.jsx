@@ -11,6 +11,7 @@ import {
 } from "@react-google-maps/api";
 import {Places} from './Places'
 import { getCityNameFromCoordinates } from '../helperFunctions';
+import { generateCircularPoints } from '../helperFunctions';
 
 export const Map = () => {
 
@@ -71,35 +72,81 @@ export const Map = () => {
       });
 
       let targetLocationArray = [];
+      
+      
       for (let i = 0; i <0.009; i = i + 0.001) {
         targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat + i, travelLoc.lng + i));
         if (i>0) {
         targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat -i, travelLoc.lng - i));
         }
       }
+      //create more circular function
       setTravelLocHeatmap(targetLocationArray);
       getCityNameFromCoordinates(travelLoc.lat, travelLoc.lng).then(name => console.log(name)).catch(error => console.log(error))
     }
 
     }, [travelLoc]);
 
-  const mediumSafetyGradientArray = [
-    'rgba(255, 255, 255, 0)',
-    'rgba(255, 182, 193, 0.5)', 
-    'rgba(255, 105, 180, 1)'        
+    const score10Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 128, 0, 0.5)',   // Dark green
+      'rgba(0, 255, 0, 1)'      // Light green
+    ];
+
+    const score9Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 255, 0, 0.5)',      // Light green
+      'rgba(144, 238, 144, 1)'    // Lighter green
+    ];
+
+    const score8Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(0, 255, 0, 0.5)',  // Light green
+      'rgba(255, 255, 0, 1)'  // Yellow
+    ];
+
+    const score7Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(173, 255, 47, 0.5)',  // Lighter green
+      'rgba(255, 255, 0, 1)'    // Yellow
+    ];
+
+    const score6Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(255, 255, 0, 0.5)',  // Yellow
+      'rgba(255, 204, 0, 1)'    // Darker yellow
+    ];
+
+    const score5Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(255, 204, 0, 0.5)',  // Dark yellow
+      'rgba(255, 128, 0, 1)'    // Orange
+    ];
+  
+    const score4Gradient = [
+      'rgba(0,0,0,0)',
+      'rgba(255, 128, 0, 0.5)',  // Orange
+      'rgba(255, 0, 127, 1)'    // Pink
+    ];
+
+  const score3Gradient = [
+    'rgba(0,0,0,0)',
+    'rgba(255, 0, 127, 0.5)',  // Pink
+    'rgba(255, 64, 64, 1)'    // Light Red
+  ];
+  const score2Gradient = [
+    'rgba(0,0,0,0)',
+    'rgba(255, 64, 64, 0.5)',  // Light Red
+    'rgba(255, 0, 0, 1)'      // Slightly Darker Red
   ];
 
-  const HighSafetyGradientArray = [
-    'rgba(0, 0, 0, 0)',
-    'rgba(0, 128, 0, 0.5)', 
-    'rgba(0, 255, 0, 1)'    
+  const score1Gradient = [
+    'rgba(0,0,0,0)',
+    'rgba(255, 0, 0, 0.5)',  // Red
+    'rgba(139, 0, 0, 1)'    // Darker Red
   ];
 
-  const LowSafetyGradientArray = [
-    'rgba(0, 0, 0, 0)',
-    'rgba(139, 0, 0, 0.5)', 
-    'rgba(255, 0, 0, 1)'
-  ]
+  
 
   return (
     <div className='container'>
@@ -131,12 +178,12 @@ export const Map = () => {
               lng: facility.geometry.location.lng(),
             }}
             icon={{
-              url: facility.icon, // Use the icon URL provided in the medicalFacilities array
+              url: facility.icon, 
               scaledSize: new window.google.maps.Size(20, 20),
             }} /> ))}
         
         </>)}
-        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: HighSafetyGradientArray}} />
+        <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: score10Gradient}} />
         </GoogleMap>
       
       </div>
