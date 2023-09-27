@@ -8,12 +8,15 @@ const GetNews = () => {
   useEffect(() => {
     const getHeadlinesByQuery = async (query) => {
       try {
-        const res = await axios.get("https://newsapi.org/v2/top-headlines/", {
+        const res = await axios.get("https://newsapi.org/v2/everything", {
           params: {
-            country: "il",
+            // country: "us",
             q: query,
-            from: "2023-09-27",
+            // from: new Date().toISOString().split('T')[0],
+            // to: new Date().toISOString().split('T')[0],
             apiKey: "ee48ee45aad34ceda527c50bfb6d29f2",
+            // language: 'en',
+            sources: 'Israel-National-News',
           },
         });
 
