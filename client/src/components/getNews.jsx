@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-require('dotenv').config();
 import './GetNews.css'
 
+// require('dotenv').config();
+
 const GetNews = () => {
+
+
   const [newsData, setNewsData] = useState([]);
 
     useEffect(() => {
