@@ -15,6 +15,7 @@ import GetNews from './GetNews';
 import { generateCircularPoints } from '../helperFunctions';
 import Distance from './distance';
 import { CrimeStatsContext } from './contexts/CrimeStatsContextProvider';
+import './Map.css'
 
 
 export const Map = () => {
