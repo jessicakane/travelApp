@@ -30,6 +30,7 @@ export const Map = () => {
   const [gradient, setGradient] = useState(false);
   const [pointsForMap, setPointsForMap] = useState([]);
   const [cityStats, setCityStats] = useState(false);
+  const [zoom, setZoom] = useState(8);
 
   const {fetchCitysStats} = useContext(CrimeStatsContext)
 
@@ -164,6 +165,7 @@ export const Map = () => {
           console.error("Nearby Search request failed with status:", status);
         }
       });
+      setZoom(10);
 
       const targetLocationArray = generateCircularPoints([travelLoc.lat, travelLoc.lng], 0.001, 20)
       // console.log(targetLocationArray)
@@ -303,7 +305,7 @@ export const Map = () => {
       <div className = 'map'>
       {cityStats && <div className = 'displayStats'>{cityName} <br/><strong>Theft score:</strong> {' ' + cityStats.theft_score}<br/> <strong>Assault score: </strong>{cityStats.assault_score} <br/> <strong>Medical facilities</strong>: {medicalFacilities.length}</div>}
       
-        <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {8} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
+        <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {zoom} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
 
         {directions && <DirectionsRenderer directions={directions} options={{
           polylineOptions: {
