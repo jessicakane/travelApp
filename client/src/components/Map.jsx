@@ -111,10 +111,10 @@ export const Map = () => {
         dataPoint.push('score0Gradient')
       }
       let heatMapData = [];
-      const targetLocationArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.01, 20)
+      const targetLocationArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.001, 20)
       console.log(targetLocationArray)
       targetLocationArray.push([dataPoint[0], dataPoint[1]]);
-      const miniArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.005, 20);
+      const miniArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.0009, 20);
       for (const point of miniArray) {
         targetLocationArray.push(point);
       }
@@ -160,17 +160,20 @@ export const Map = () => {
         }
       });
 
-      let targetLocationArray = [];
-      
-      
-      for (let i = 0; i <0.009; i = i + 0.001) {
-        targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat + i, travelLoc.lng + i));
-        if (i>0) {
-        targetLocationArray.push(new window.google.maps.LatLng(travelLoc.lat -i, travelLoc.lng - i));
-        }
+      const targetLocationArray = generateCircularPoints([travelLoc.lat, travelLoc.lng], 0.001, 20)
+      console.log(targetLocationArray)
+      targetLocationArray.push([travelLoc.lat, travelLoc.lng]);
+      const miniArray = generateCircularPoints([travelLoc.lat, travelLoc.lng], 0.0009, 20);
+      for (const point of miniArray) {
+        targetLocationArray.push(point);
+      }
+      let heatMapData = [];
+      for (const point of targetLocationArray) {
+        heatMapData.push(new window.google.maps.LatLng(point[0], point[1]));
+        
       }
       //create more circular function
-      setTravelLocHeatmap(targetLocationArray);
+      setTravelLocHeatmap(heatMapData);
       getCityNameFromCoordinates(travelLoc.lat, travelLoc.lng).then(name => setCityName(name)).catch(error => console.log(error))
     }
 
