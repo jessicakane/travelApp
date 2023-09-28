@@ -1,5 +1,6 @@
 .controls {
     overflow: auto;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .staySafe, .staySafe p {

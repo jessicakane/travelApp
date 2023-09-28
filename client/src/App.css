@@ -78,6 +78,10 @@
   margin: 27% 34% 10% 10%;
   width: 50%;
   font-family: 'Pacifico', cursive;
+  position: absolute;
+    top: -15%;
+    /* left: 50%;
+    transform: translateX(-50%); */
 }
 
 @keyframes flyIn {
@@ -125,6 +129,10 @@
   background-color: #edc57e;
   width: 50%;
   transition: transform 0.3s ease;
+  position: absolute;
+  bottom: -30%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .icon {
