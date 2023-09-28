@@ -97,7 +97,9 @@ export const Map = () => {
       [31.423196, 34.595254],
       [31.804381, 34.655314],
       [31.6687885, 34.5742523],
-      [31.951014, 34.888075]
+      [31.951014, 34.888075],
+      [31.252973, 34.791462],
+      
 
     ];
     for (const dataPoint of dataPoints) { 
@@ -232,43 +234,43 @@ export const Map = () => {
 
     const score3Gradient = [
       'rgba(0,0,0,0)',
-      'rgba(0, 255, 0, 0.5)',  // Light green
+      'rgba(173, 255, 47, 0.5)',  // Lighter green
       'rgba(255, 255, 0, 1)'  // Yellow
     ];
 
     const score4Gradient = [
       'rgba(0,0,0,0)',
-      'rgba(173, 255, 47, 0.5)',  // Lighter green
-      'rgba(255, 255, 0, 1)'    // Yellow
+      'rgba(255, 128, 0, 0.5)',  // Orange
+      'rgba(255, 0, 127, 1)'    // Yellow
     ];
 
     const score5Gradient = [
       'rgba(0,0,0,0)',
-      'rgba(255, 255, 0, 0.5)',  // Yellow
-      'rgba(255, 204, 0, 1)'    // Darker yellow
+    'rgba(255, 0, 127, 0.5)',  // Pink
+    'rgba(255, 64, 64, 1)'   // Darker yellow
     ];
 
     const score6Gradient = [
       'rgba(0,0,0,0)',
-      'rgba(255, 204, 0, 0.5)',  // Dark yellow
-      'rgba(255, 128, 0, 1)'    // Orange
+    'rgba(255, 64, 64, 0.5)',  // Light Red
+    'rgba(255, 0, 0, 1)'   // Orange
     ];
   
     const score7Gradient = [
       'rgba(0,0,0,0)',
-      'rgba(255, 128, 0, 0.5)',  // Orange
-      'rgba(255, 0, 127, 1)'    // Pink
+    'rgba(255, 0, 0, 0.5)',  // Red
+    'rgba(139, 0, 0, 1)'    // Pink
     ];
 
   const score8Gradient = [
     'rgba(0,0,0,0)',
-    'rgba(255, 0, 127, 0.5)',  // Pink
-    'rgba(255, 64, 64, 1)'    // Light Red
+    'rgba(255, 0, 0, 0.5)',  // Red
+    'rgba(139, 0, 0, 1)'   // Light Red
   ];
   const score9Gradient = [
     'rgba(0,0,0,0)',
-    'rgba(255, 64, 64, 0.5)',  // Light Red
-    'rgba(255, 0, 0, 1)'      // Slightly Darker Red
+    'rgba(255, 0, 0, 0.5)',  // Red
+    'rgba(139, 0, 0, 1)'     // Slightly Darker Red
   ];
 
   const score10Gradient = [
