@@ -29,7 +29,7 @@ export const Map = () => {
   const [safetyScore, setSafetyScore] = useState(0);
   const [gradient, setGradient] = useState(false);
   const [pointsForMap, setPointsForMap] = useState([]);
-  const [cityStats, setCityStats] = useState([]);
+  const [cityStats, setCityStats] = useState(false);
 
   const {fetchCitysStats} = useContext(CrimeStatsContext)
 
@@ -93,7 +93,10 @@ export const Map = () => {
       [31.747041, 34.988099],
       [32.4340458, 34.9196518],
       [31.069419, 35.033363],
-      [31.423196, 34.595254]
+      [31.423196, 34.595254],
+      [31.804381, 34.655314],
+      [31.6687885, 34.5742523],
+      [31.951014, 34.888075]
 
     ];
     for (const dataPoint of dataPoints) { 
@@ -103,7 +106,7 @@ export const Map = () => {
       const cityStats = await fetchCitysStats(name);
       // console.log(cityStats);
       if (cityStats) {
-        const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
+        const score = Math.round(cityStats.NormalizeScore*10)
         if (score) {
         dataPoint.push(`score${score}Gradient`);} else {
           dataPoint.push('score0Gradient');
@@ -138,7 +141,7 @@ export const Map = () => {
 
   useEffect(() => {
     if (travelLoc) {
-      // console.log([travelLoc.lat, travelLoc.lng])
+      console.log([travelLoc.lat, travelLoc.lng])
       const targetLocation = new window.google.maps.LatLng(
         travelLoc.lat,
         travelLoc.lng
@@ -182,8 +185,7 @@ export const Map = () => {
     }, [travelLoc]);
 
     useEffect(() => {
-      if (cityName) {
-      getCitysScore(cityName);}
+      getCitysScore(cityName);
     }, [cityName])
 
     useEffect(() => {
@@ -196,17 +198,17 @@ export const Map = () => {
 
     const getCitysScore = async(cityName) => {
       const cityStats = await fetchCitysStats(cityName);
+      console.log(cityStats)
       if (cityStats) {
         setCityStats(cityStats);
-        const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
-      setSafetyScore(score);
+      setSafetyScore(Math.round(cityStats.NormalizeScore*10));
         return true
       }
       
       return false
     }
 
-    const score10Gradient = [
+    const score1Gradient = [
       'rgba(0,0,0,0)',
       'rgba(0, 128, 0, 0.5)',   // Dark green
       'rgba(0, 255, 0, 1)'      // Light green
@@ -220,54 +222,54 @@ export const Map = () => {
 
 
 
-    const score9Gradient = [
+    const score2Gradient = [
       'rgba(0,0,0,0)',
       'rgba(0, 255, 0, 0.5)',      // Light green
       'rgba(144, 238, 144, 1)'    // Lighter green
     ];
 
-    const score8Gradient = [
+    const score3Gradient = [
       'rgba(0,0,0,0)',
       'rgba(0, 255, 0, 0.5)',  // Light green
       'rgba(255, 255, 0, 1)'  // Yellow
     ];
 
-    const score7Gradient = [
+    const score4Gradient = [
       'rgba(0,0,0,0)',
       'rgba(173, 255, 47, 0.5)',  // Lighter green
       'rgba(255, 255, 0, 1)'    // Yellow
     ];
 
-    const score6Gradient = [
+    const score5Gradient = [
       'rgba(0,0,0,0)',
       'rgba(255, 255, 0, 0.5)',  // Yellow
       'rgba(255, 204, 0, 1)'    // Darker yellow
     ];
 
-    const score5Gradient = [
+    const score6Gradient = [
       'rgba(0,0,0,0)',
       'rgba(255, 204, 0, 0.5)',  // Dark yellow
       'rgba(255, 128, 0, 1)'    // Orange
     ];
   
-    const score4Gradient = [
+    const score7Gradient = [
       'rgba(0,0,0,0)',
       'rgba(255, 128, 0, 0.5)',  // Orange
       'rgba(255, 0, 127, 1)'    // Pink
     ];
 
-  const score3Gradient = [
+  const score8Gradient = [
     'rgba(0,0,0,0)',
     'rgba(255, 0, 127, 0.5)',  // Pink
     'rgba(255, 64, 64, 1)'    // Light Red
   ];
-  const score2Gradient = [
+  const score9Gradient = [
     'rgba(0,0,0,0)',
     'rgba(255, 64, 64, 0.5)',  // Light Red
     'rgba(255, 0, 0, 1)'      // Slightly Darker Red
   ];
 
-  const score1Gradient = [
+  const score10Gradient = [
     'rgba(0,0,0,0)',
     'rgba(255, 0, 0, 0.5)',  // Red
     'rgba(139, 0, 0, 1)'    // Darker Red

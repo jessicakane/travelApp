@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 const getStatByCityNameController = async(req, res) => {
     try {
-        const cityScore = await getStatsByCityName(req.query.cityName);
-        //const cityScore = await newGetStatsByCityName(req.query.cityName);
+        //const cityScore = await getStatsByCityName(req.query.cityName);
+        const cityScore = await newGetStatsByCityName(req.query.cityName);
         res.status(201).json(cityScore);
     } catch(error) {
         console.error(error);

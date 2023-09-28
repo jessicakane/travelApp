@@ -11,7 +11,7 @@ export const CrimeStatsContextProvider = ({children}) => {
         try {
             const res = await axios.get(`http://localhost:8080/api/crimestats?cityName=${cityName}`);
             const citysStats = res.data;
-            
+            console.log(citysStats)
             return citysStats;
         } catch(error) {
             console.error(error)

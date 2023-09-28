@@ -15,8 +15,9 @@ async function getStatsByCityName(cityName) {
 
 async function newGetStatsByCityName(cityName) {
     try {
-    const cityData = await IsraelCrime.findOne({city: cityName});
+    const cityData = await IsraelCrime.findOne({mapArea: cityName});
     console.log(cityName)
+    console.log(cityData);
     return cityData;
     } catch (error) {
         console.error('Error fetching latest score:', error);
