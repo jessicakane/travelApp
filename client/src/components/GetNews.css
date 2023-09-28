@@ -67,7 +67,7 @@ body {
     display: inline-block;
     font-size: 32px;
     padding-left: 100%;
-    animation: tickerTape 1200s linear infinite;
+    animation: tickerTape 120s linear infinite;
   }
   @keyframes tickerTape {
     0% {
