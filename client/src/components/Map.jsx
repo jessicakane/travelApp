@@ -280,23 +280,21 @@ export const Map = () => {
         <Places setGradient = {setGradient} score0Gradient = {score0Gradient} setTravelLoc = {(position) => {
           setTravelLoc(position);
           mapRef.current?.panTo(position)}} />
-          {travelLoc && (
-            <>
-            <div> There are {medicalFacilities.length} medical facilities within 25 km of your travel destination.</div>
-            </>
-          )}
       
 
           {pointsForMap.length === 0 && <div className = 'mapColorLoader'>Please wait while we color your map...</div>}
           {pointsForMap.length > 0 && <><div className = 'gradientBackgroundDiv'></div><div className = 'keyContainer'><div className = 'danger'>Dangerous</div><div className = 'safe'>Safe</div></div></>}
           {directions && <Distance leg={directions.routes[0].legs[0]} />}
+          <div className = 'staySafe'>
+          <div><strong>Stay Safe </strong>in Israel:</div>
           <p>
-          Emergency Numbers<br/>
-          100 - Police<br/>
-          101 - Ambulance <br/>
-          102 - Fire  
+          <strong>Emergency Numbers</strong><br/>
+          100 - Police 👮‍♀️<br/>
+          101 - Ambulance 🚑<br/>
+          102 - Fire 🧯 
           </p>  
           <GetNews />  
+        </div>
         </div>
       <div className = 'map'>
       
