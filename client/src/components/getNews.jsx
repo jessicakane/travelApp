@@ -11,7 +11,7 @@ const GetNews = () => {
 
     useEffect(() => {
         const translateText = async (text) => { 
-          const api_key = process.env.OPEN_AI_KEY;
+          const api_key = process.env.REACT_APP_OPEN_AI_KEY;
           const requestData = {
             prompt: `Translate the following Hebrew text to English: '${text}'`,
             max_tokens: 50,
@@ -41,7 +41,7 @@ const GetNews = () => {
             country: "il",
             q: query,
             from: new Date().toISOString().split('T')[0],
-            apiKey: process.env.NEWS_API_KEY_NEW,
+            apiKey: process.env.REACT_APP_NEWS_API_KEY_NEW,
             pageSize: "3",
           },
         });
