@@ -97,10 +97,10 @@ export const Map = () => {
     ];
     for (const dataPoint of dataPoints) { 
       const name = await getCityNameFromCoordinates(dataPoint[0], dataPoint[1]);
-      console.log(name);
+      // console.log(name);
       if (name) {
       const cityStats = await fetchCitysStats(name);
-      console.log(cityStats);
+      // console.log(cityStats);
       if (cityStats) {
         const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
         if (score) {
@@ -113,7 +113,7 @@ export const Map = () => {
       }
       let heatMapData = [];
       const targetLocationArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.001, 20)
-      console.log(targetLocationArray)
+      // console.log(targetLocationArray)
       targetLocationArray.push([dataPoint[0], dataPoint[1]]);
       const miniArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.0009, 20);
       for (const point of miniArray) {
@@ -123,21 +123,21 @@ export const Map = () => {
         heatMapData.push(new window.google.maps.LatLng(point[0], point[1]));
         
       }
-      console.log(heatMapData)
+      // console.log(heatMapData)
       dataPoint.push(heatMapData);
     }
     
     setPointsForMap(dataPoints)
-    console.log(dataPoints)
+    // console.log(dataPoints)
   }
 
   useEffect(() => {
-    console.log(pointsForMap)
+    // console.log(pointsForMap)
   }, [pointsForMap])
 
   useEffect(() => {
     if (travelLoc) {
-      console.log([travelLoc.lat, travelLoc.lng])
+      // console.log([travelLoc.lat, travelLoc.lng])
       const targetLocation = new window.google.maps.LatLng(
         travelLoc.lat,
         travelLoc.lng
@@ -162,7 +162,7 @@ export const Map = () => {
       });
 
       const targetLocationArray = generateCircularPoints([travelLoc.lat, travelLoc.lng], 0.001, 20)
-      console.log(targetLocationArray)
+      // console.log(targetLocationArray)
       targetLocationArray.push([travelLoc.lat, travelLoc.lng]);
       const miniArray = generateCircularPoints([travelLoc.lat, travelLoc.lng], 0.0009, 20);
       for (const point of miniArray) {
@@ -337,7 +337,7 @@ export const Map = () => {
         {pointsForMap.length > 0 && pointsForMap.map(point => <HeatmapLayer data = {point[3]} options = {{radius: 10, gradient: eval(point[2])}} />)}
         <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: gradient}} />
         </GoogleMap>
-      
+        {/* <GetNews />   */}
       </div>
     </div>
   )
