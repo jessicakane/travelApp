@@ -10,7 +10,7 @@ import {
   useLoadScript, 
 } from "@react-google-maps/api";
 import {Places} from './Places'
-import { getCityNameFromCoordinates, generateDataPointsIsrael } from '../helperFunctions';
+import { getCityNameFromCoordinates, getLocationDetailsFromCoordinates, generateDataPointsIsrael } from '../helperFunctions';
 import GetNews from './GetNews';
 import { generateCircularPoints } from '../helperFunctions';
 import Distance from './distance';
@@ -87,7 +87,12 @@ export const Map = () => {
       [31.9730015, 34.7925013],
       [32.015833, 34.787384],
       [31.892773, 34.811272],
-      [31.890267, 35.010397]
+      [31.890267, 35.010397],
+      [31.747041, 34.988099],
+      [32.4340458, 34.9196518],
+      [31.069419, 35.033363],
+      [31.423196, 34.595254]
+
     ];
     for (const dataPoint of dataPoints) { 
       const name = await getCityNameFromCoordinates(dataPoint[0], dataPoint[1]);
@@ -105,14 +110,20 @@ export const Map = () => {
       if (dataPoint.length === 2) {
         dataPoint.push('score0Gradient')
       }
-      let targetLocationArray = [];
-      for (let i = 0; i <0.009; i = i + 0.001) {
-        targetLocationArray.push(new window.google.maps.LatLng(dataPoint[0] + i, dataPoint[1] + i));
-        if (i>0) {
-        targetLocationArray.push(new window.google.maps.LatLng(dataPoint[0] -i, dataPoint[1] - i));
-        }
+      let heatMapData = [];
+      const targetLocationArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.01, 20)
+      console.log(targetLocationArray)
+      targetLocationArray.push([dataPoint[0], dataPoint[1]]);
+      const miniArray = generateCircularPoints([dataPoint[0], dataPoint[1]], 0.005, 20);
+      for (const point of miniArray) {
+        targetLocationArray.push(point);
       }
-      dataPoint.push(targetLocationArray);
+      for (const point of targetLocationArray) {
+        heatMapData.push(new window.google.maps.LatLng(point[0], point[1]));
+        
+      }
+      console.log(heatMapData)
+      dataPoint.push(heatMapData);
     }
     
     setPointsForMap(dataPoints)
@@ -321,7 +332,7 @@ export const Map = () => {
             })} /> ))}
         
         </>)}
-        {pointsForMap.length > 0 && pointsForMap.map(point => <HeatmapLayer data = {point[3]} options = {{radius: 20, gradient: eval(point[2])}} />)}
+        {pointsForMap.length > 0 && pointsForMap.map(point => <HeatmapLayer data = {point[3]} options = {{radius: 10, gradient: eval(point[2])}} />)}
         <HeatmapLayer data = {travelLocHeatmap} options = {{radius: 30, gradient: gradient}} />
         </GoogleMap>
       
