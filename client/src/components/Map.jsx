@@ -29,6 +29,7 @@ export const Map = () => {
   const [safetyScore, setSafetyScore] = useState(0);
   const [gradient, setGradient] = useState(false);
   const [pointsForMap, setPointsForMap] = useState([]);
+  const [cityStats, setCityStats] = useState([]);
 
   const {fetchCitysStats} = useContext(CrimeStatsContext)
 
@@ -196,6 +197,7 @@ export const Map = () => {
     const getCitysScore = async(cityName) => {
       const cityStats = await fetchCitysStats(cityName);
       if (cityStats) {
+        setCityStats(cityStats);
         const score = Math.round(((parseFloat(cityStats.assault_score) + parseFloat(cityStats.theft_score))/2)*10)
       setSafetyScore(score);
         return true
@@ -297,6 +299,7 @@ export const Map = () => {
         </div>
         </div>
       <div className = 'map'>
+      {cityStats && <div className = 'displayStats'>{cityName} <br/><strong>Theft score:</strong> {' ' + cityStats.theft_score}<br/> <strong>Assault score: </strong>{cityStats.assault_score} <br/> <strong>Medical facilities</strong>: {medicalFacilities.length}</div>}
       
         <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {10} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
 
