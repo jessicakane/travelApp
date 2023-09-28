@@ -15,6 +15,7 @@ import GetNews from './GetNews';
 import { generateCircularPoints } from '../helperFunctions';
 import Distance from './distance';
 import { CrimeStatsContext } from './contexts/CrimeStatsContextProvider';
+import './Map.css'
 
 
 export const Map = () => {
@@ -289,7 +290,12 @@ export const Map = () => {
           {pointsForMap.length === 0 && <div className = 'mapColorLoader'>Please wait while we color your map...</div>}
           {pointsForMap.length > 0 && <><div className = 'gradientBackgroundDiv'></div><div className = 'keyContainer'><div className = 'danger'>Dangerous</div><div className = 'safe'>Safe</div></div></>}
           {directions && <Distance leg={directions.routes[0].legs[0]} />}
-
+          <p>
+          Emergency Numbers<br/>
+          100 - Police<br/>
+          101 - Ambulance <br/>
+          102 - Fire  
+          </p>  
           <GetNews />  
         </div>
       <div className = 'map'>
