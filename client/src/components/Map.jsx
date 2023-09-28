@@ -99,7 +99,7 @@ export const Map = () => {
       [31.6687885, 34.5742523],
       [31.951014, 34.888075],
       [31.252973, 34.791462],
-      
+
 
     ];
     for (const dataPoint of dataPoints) { 
@@ -305,7 +305,8 @@ export const Map = () => {
         </div>
         </div>
       <div className = 'map'>
-      {cityStats && <div className = 'displayStats'>{cityName} <br/><strong>Theft score:</strong> {' ' + cityStats.theft_score}<br/> <strong>Assault score: </strong>{cityStats.assault_score} <br/> <strong>Medical facilities</strong>: {medicalFacilities.length}</div>}
+      {cityStats && <div className = 'displayStats'>{cityName} <br/><strong>Theft:</strong> {' ' + Math.round(cityStats.NormalizeScore_property*10)+'/10'
+}<br/> <strong>Violent Crime: </strong>{Math.round(cityStats.NormalizeScore_assult*10)+'/10'} <br/> <strong>Traffic violations:</strong>{Math.round(cityStats.NormalizeScore_traffic*10)+'/10'} <br/><strong>Medical facilities</strong>: {medicalFacilities.length}</div>}
       
         <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {zoom} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
 

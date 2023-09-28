@@ -12,6 +12,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors({origin: '*'}));
 
+
 app.use('/api/crimestats', crimeStatRoutes);
 
 async function init() {
