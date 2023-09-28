@@ -303,7 +303,7 @@ export const Map = () => {
       <div className = 'map'>
       {cityStats && <div className = 'displayStats'>{cityName} <br/><strong>Theft score:</strong> {' ' + cityStats.theft_score}<br/> <strong>Assault score: </strong>{cityStats.assault_score} <br/> <strong>Medical facilities</strong>: {medicalFacilities.length}</div>}
       
-        <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {10} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
+        <GoogleMap options = {options} mapContainerClassName = 'map-container' zoom = {8} center = {userLocation || { lat: 0, lng: 0 }} onLoad={onLoad}> 
 
         {directions && <DirectionsRenderer directions={directions} options={{
           polylineOptions: {
